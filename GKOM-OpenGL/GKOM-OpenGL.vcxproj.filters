@@ -46,6 +46,12 @@
     <Filter Include="Pliki źródłowe\Texture">
       <UniqueIdentifier>{3c4b3ece-60ce-4f48-a5ef-b49ea9dbe73f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Animation">
+      <UniqueIdentifier>{a0baba02-2e8b-4e3b-9877-d0d4b44171e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Animation">
+      <UniqueIdentifier>{9c2d236d-4bd9-4690-a3eb-d5147a5454dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vs_adapter.h">
@@ -93,6 +99,12 @@
     <ClInclude Include="Model\modelComposite.h">
       <Filter>Pliki nagłówkowe\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Animation\animation.h">
+      <Filter>Pliki nagłówkowe\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\frame.h">
+      <Filter>Pliki nagłówkowe\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -130,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="Model\modelComposite.cpp">
       <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\animation.cpp">
+      <Filter>Pliki źródłowe\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\frame.cpp">
+      <Filter>Pliki źródłowe\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

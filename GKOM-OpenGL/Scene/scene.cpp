@@ -1,9 +1,9 @@
+#include "scene.h"
 #include <cmath>
 #include <iterator>
 #include <glm/gtc/quaternion.hpp>
 #include "../Texture/texture.h"
 #include "../Model/PrimitiveFactory.h"
-#include "scene.h"
 
 void Scene::setPositionTexture(ModelComponent* model, glm::vec3 position, Texture texture) {
 	model->setPosition(position);
@@ -30,82 +30,6 @@ ModelComposite* Scene::createLog() {
 
 void Scene::init() {
 	initModels();
-	initAnimations();
-}
-
-void Scene::initAnimations(){
-	animation.emplace(saw, std::vector<AnimationState>());
-	animation.emplace(halvedLog, std::vector<AnimationState>());
-	animation.emplace(log1, std::vector<AnimationState>());
-	animation.emplace(log2, std::vector<AnimationState>());
-
-	// halvedLog
-	std::vector<AnimationState>& hLogFrames = animation[halvedLog];
-	GLfloat logSpeed = -HALVED_LOG_Z * 0.5; // per second
-	hLogFrames.emplace_back(0.0f, glm::vec3(0, LOG_Y, HALVED_LOG_Z));
-	hLogFrames.emplace_back(2.0f, glm::vec3(0, LOG_Y, 0));
-	hLogFrames.emplace_back(6.0f, glm::vec3(0, LOG_Y, 0));
-	hLogFrames.emplace_back(8.0f, glm::vec3(0, LOG_Y, -HALVED_LOG_Z));
-	hLogFrames.emplace_back(9.0f, glm::vec3(0, LOG_Y, -HALVED_LOG_Z + logSpeed * 1));
-	
-	// separate logs
-	std::vector<AnimationState>& log1Frames = animation[log1];
-	std::vector<AnimationState>& log2Frames = animation[log2];
-	// log1
-	log1Frames.emplace_back(0.0f, glm::vec3(0, 0, 0.5f*LOG_WIDTH));
-	log1Frames.emplace_back(8.9f, glm::vec3(0, 0, 0.5f*LOG_WIDTH));
-	log1Frames.emplace_back(9.0f, glm::vec3(0, -0.1f*logSpeed, 0.5f*LOG_WIDTH));
-	log1Frames.emplace_back(9.07f, glm::vec3(0, -0.17f*logSpeed, 0.5f*LOG_WIDTH + 0.07f*logSpeed));
-	log1Frames.emplace_back(9.22f, glm::vec3(0, -0.45f*logSpeed, 0.5f*LOG_WIDTH + 0.22f*logSpeed));
-	log1Frames.emplace_back(9.4f, glm::vec3(0, -0.65f*logSpeed, 0.5f*LOG_WIDTH + 0.4*logSpeed));
-	// log2
-	log2Frames.emplace_back(0.0f, glm::vec3(0, 0, -0.5f*LOG_WIDTH));
-	log2Frames.emplace_back(9.0f, glm::vec3(0, 0, -0.5f*LOG_WIDTH));
-	log2Frames.emplace_back(9.9f, glm::vec3(0, 0, -0.5f*LOG_WIDTH + 0.9*logSpeed));
-	log2Frames.emplace_back(10.07f, glm::vec3(0, -0.17f*logSpeed, -0.5f*LOG_WIDTH + 1.07f*logSpeed));
-	log2Frames.emplace_back(10.22f, glm::vec3(0, -0.45f*logSpeed, -0.5f*LOG_WIDTH + 1.22f*logSpeed));
-	log2Frames.emplace_back(10.4f, glm::vec3(0, -0.65f*logSpeed, -0.5f*LOG_WIDTH + 1.4f*logSpeed));/**/
-
-	// saw
-	std::vector<AnimationState>& sawFrames = animation[saw];
-	GLfloat sawUpY = SAW_Y;
-	GLfloat sawDownY = SAW_Y - 6.75f + SAW_DEPTH + LOG_RADIUS;
-	GLfloat sawLeftX = -0.75f;
-	GLfloat sawRightX = 0.75f;
-	glm::vec3 sawUp = glm::vec3(0, sawUpY, 0);
-	sawFrames.emplace_back(0.0f, sawUp);
-	sawFrames.emplace_back(2.0f, sawUp);
-	sawFrames.emplace_back(3.0f, glm::vec3(0, sawDownY, 0));
-	for (GLfloat i = 3.25f; i < 5.0f; ++i)
-	{
-		sawFrames.emplace_back(i, glm::vec3(sawLeftX, sawDownY - 0.25f, 0));
-		sawFrames.emplace_back(i + 0.5f, glm::vec3(sawRightX, sawDownY - 0.75f, 0));
-		sawDownY -= 0.75f;
-	}
-	sawFrames.emplace_back(5.0f, glm::vec3(0, sawDownY, 0));
-	sawFrames.emplace_back(6.0f, sawUp);/**/
-}
-
-void Scene::animate(){
-	std::vector<AnimationState> keyframes;
-	//Model* a[] = { halvedLog };
-	Model* a[] = { saw, halvedLog, log1, log2 };
-	AnimationState state1, state2;
-	GLfloat param;
-	for (auto it = std::begin(a); it != std::end(a); ++it)
-	{
-		keyframes = animation[*it];
-		for (auto it2 = keyframes.begin(); it2 != keyframes.end(); ++it2)
-		{
-			if (it2->time > timePosition) {
-				state2 = *it2;
-				state1 = *(it2 - 1);
-				param = (timePosition - state1.time) / (state2.time - state1.time);
-				(*it)->setPosition(glm::mix(state1.position, state2.position, param));
-				break;
-			}
-		}
-	}
 }
 
 void Scene::initModels() {
@@ -118,10 +42,37 @@ void Scene::initModels() {
 		(*halvedLog)[0]->setPosition(glm::vec3(0, 0, 0.5f*LOG_WIDTH));
 		(*halvedLog)[1]->setPosition(glm::vec3(0, 0, -0.5f*LOG_WIDTH));
 		halvedLog->setPosition(glm::vec3(0, LOG_Y, HALVED_LOG_Z));
-		this->halvedLog = halvedLog;
-		this->log1 = (*halvedLog)[0];
-		this->log2 = (*halvedLog)[1];
 		models.add(halvedLog);
+
+		{
+			GLfloat logSpeed = -HALVED_LOG_Z * 0.5; // per second
+
+			Animation* halvedLogAnimation = new Animation(halvedLog);
+			halvedLogAnimation->addFrame(new Frame(0.0f, glm::vec3(0, LOG_Y, HALVED_LOG_Z)));
+			halvedLogAnimation->addFrame(new Frame(2.0f, glm::vec3(0, LOG_Y, 0)));
+			halvedLogAnimation->addFrame(new Frame(6.0f, glm::vec3(0, LOG_Y, 0)));
+			halvedLogAnimation->addFrame(new Frame(8.0f, glm::vec3(0, LOG_Y, -HALVED_LOG_Z)));
+			halvedLogAnimation->addFrame(new Frame(9.0f, glm::vec3(0, LOG_Y, -HALVED_LOG_Z + logSpeed * 1)));
+			animations.push_back(*halvedLogAnimation);
+
+			Animation* log1Animation = new Animation((*halvedLog)[0]);
+			log1Animation->addFrame(new Frame(0.0f, glm::vec3(0, 0, 0.5f*LOG_WIDTH)));
+			log1Animation->addFrame(new Frame(8.9f, glm::vec3(0, 0, 0.5f*LOG_WIDTH)));
+			log1Animation->addFrame(new Frame(9.0f, glm::vec3(0, -0.1f*logSpeed, 0.5f*LOG_WIDTH)));
+			log1Animation->addFrame(new Frame(9.07f, glm::vec3(0, -0.17f*logSpeed, 0.5f*LOG_WIDTH + 0.07f*logSpeed)));
+			log1Animation->addFrame(new Frame(9.22f, glm::vec3(0, -0.45f*logSpeed, 0.5f*LOG_WIDTH + 0.22f*logSpeed)));
+			log1Animation->addFrame(new Frame(9.4f, glm::vec3(0, -0.65f*logSpeed, 0.5f*LOG_WIDTH + 0.4*logSpeed)));
+			animations.push_back(*log1Animation);
+
+			Animation* log2Animation = new Animation((*halvedLog)[1]);
+			log2Animation->addFrame(new Frame(0.0f, glm::vec3(0, 0, -0.5f*LOG_WIDTH)));
+			log2Animation->addFrame(new Frame(9.0f, glm::vec3(0, 0, -0.5f*LOG_WIDTH)));
+			log2Animation->addFrame(new Frame(9.9f, glm::vec3(0, 0, -0.5f*LOG_WIDTH + 0.9*logSpeed)));
+			log2Animation->addFrame(new Frame(10.07f, glm::vec3(0, -0.17f*logSpeed, -0.5f*LOG_WIDTH + 1.07f*logSpeed)));
+			log2Animation->addFrame(new Frame(10.22f, glm::vec3(0, -0.45f*logSpeed, -0.5f*LOG_WIDTH + 1.22f*logSpeed)));
+			log2Animation->addFrame(new Frame(10.4f, glm::vec3(0, -0.65f*logSpeed, -0.5f*LOG_WIDTH + 1.4f*logSpeed)));
+			animations.push_back(*log2Animation);
+		}
 	}
 	// trak
 	{
@@ -129,8 +80,28 @@ void Scene::initModels() {
 
 		ModelComponent* saw = new ModelComponent(PrimitiveFactory::createSaw(SAW_WIDTH, SAW_DEPTH, 32, SAW_COLOR));
 		setPositionTexture(saw, glm::vec3(0, SAW_Y, 0), blank);
-		this->saw = saw;
 		trak->add(saw);
+
+		{
+			Animation* sawAnimation = new Animation(saw);
+			GLfloat sawUpY = SAW_Y;
+			GLfloat sawDownY = SAW_Y - 6.75f + SAW_DEPTH + LOG_RADIUS;
+			GLfloat sawLeftX = -0.75f;
+			GLfloat sawRightX = 0.75f;
+			glm::vec3 sawUp = glm::vec3(0, sawUpY, 0);
+			sawAnimation->addFrame(new Frame(0.0f, sawUp));
+			sawAnimation->addFrame(new Frame(2.0f, sawUp));
+			sawAnimation->addFrame(new Frame(3.0f, glm::vec3(0, sawDownY, 0)));
+			for (GLfloat i = 3.25f; i < 5.0f; ++i)
+			{
+				sawAnimation->addFrame(new Frame(i, glm::vec3(sawLeftX, sawDownY - 0.25f, 0)));
+				sawAnimation->addFrame(new Frame(i + 0.5f, glm::vec3(sawRightX, sawDownY - 0.75f, 0)));
+				sawDownY -= 0.75f;
+			}
+			sawAnimation->addFrame(new Frame(5.0f, glm::vec3(0, sawDownY, 0)));
+			sawAnimation->addFrame(new Frame(6.0f, sawUp));
+			animations.push_back(*sawAnimation);
+		}
 
 		ModelComponent* table = new ModelComponent(PrimitiveFactory::createBox(TABLE_WIDTH, TABLE_HEIGHT, TABLE_DEPTH, TABLE_COLOR));
 		setPositionTexture(table, glm::vec3(0, TABLE_Y, 0), archWood);
@@ -196,17 +167,20 @@ void Scene::initModels() {
 		lamp->setPosition(glm::vec3(-12.0f - TABLE_WIDTH * 0.5f, 0, -5));
 		models.add(lamp);
 
-		light = new Light(lampStem->getPosition() + glm::vec3(LAMP_THICKNESS*0.5f - 0.1f, -LAMP_RADIUS - 0.5f, 0), LIGHT_COLOR, LIGHT_INTENSITY);
+		light = new Light(lampStem->getTruePosition() + glm::vec3(LAMP_THICKNESS*0.5f - 0.1f, -LAMP_RADIUS - 0.5f, 0), LIGHT_COLOR, LIGHT_INTENSITY);
 	}
 }
 
 void Scene::incrementTime(GLfloat delta) {
 	timePosition += delta;
 	timePosition = (float)fmod(timePosition, SCENE_CYCLE);
+	for (auto it = animations.begin(); it != animations.end(); ++it)
+		it->setTime(timePosition);
 }
 
 void Scene::render(Render renderer) {
-	animate();
+	for (auto it = animations.begin(); it != animations.end(); ++it)
+		it->animate();
 	renderer.renderLight(*light);
     renderer.renderModel(&models);
 }

@@ -13,19 +13,18 @@ void ModelComposite::add(Model* model) {
 
 void ModelComposite::calculateMatrix() {
 	glm::mat4 unit;
-	auto translate = glm::translate(unit, position);
-	auto rotate = glm::toMat4(orientation);
+	auto translate = glm::translate(unit, getPosition());
+	auto rotate = glm::toMat4(getOrientation());
 
-	matrix = externalMatrix * translate * rotate;
+	setMatrix(getExternalMatrix() * translate * rotate);
 
 	for (auto it = components.begin(); it != components.end(); ++it) {
-		(*it)->setExternalMatrix(matrix);
+		(*it)->setExternalMatrix(getMatrix());
 	}
 }
 
 void ModelComposite::render(GLuint matrixHandle, GLuint textureHandle) const {
     for(auto it = components.begin(); it != components.end(); ++it) {
-        //glUniformMatrix4fv(matrixHandle, 1, GL_FALSE, glm::value_ptr(it->getMatrix()));
 		(*it)->render(matrixHandle, textureHandle);
     }
 }

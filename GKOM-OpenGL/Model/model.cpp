@@ -10,11 +10,6 @@ void Model::setPosition(glm::vec3 position) {
 	calculateMatrix();
 }
 
-glm::vec3 Model::getPosition() {
-	//return position;
-	return glm::vec3(matrix[3]);
-}
-
 void Model::setQuatRotation(glm::vec3 axis, GLfloat angle) {
 	orientation = glm::angleAxis(angle, axis);
 	calculateMatrix();
@@ -30,6 +25,26 @@ void Model::setExternalMatrix(glm::mat4 matrix) {
 	calculateMatrix();
 }
 
+const glm::vec3 Model::getTruePosition() const {
+	return glm::vec3(matrix[3]);
+}
+
+const glm::vec3 Model::getPosition() const {
+	return position;
+}
+
+const glm::quat Model::getOrientation() const {
+	return orientation;
+}
+
 const glm::mat4& Model::getMatrix() const {
-	return matrix; 
+	return matrix;
+}
+
+const glm::mat4& Model::getExternalMatrix() const {
+	return externalMatrix;
+}
+
+void Model::setMatrix(glm::mat4 matrix) {
+	this->matrix = matrix;
 }

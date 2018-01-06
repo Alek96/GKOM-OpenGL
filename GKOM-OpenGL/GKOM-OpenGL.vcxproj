@@ -131,6 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Animation\animation.h" />
+    <ClInclude Include="Animation\frame.h" />
     <ClInclude Include="Light\light.h" />
     <ClInclude Include="Model\modelComposite.h" />
     <ClInclude Include="Model\mesh.h" />
@@ -148,6 +150,8 @@
     <ClInclude Include="Window\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation\animation.cpp" />
+    <ClCompile Include="Animation\frame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\modelComposite.cpp" />
     <ClCompile Include="Model\mesh.cpp" />

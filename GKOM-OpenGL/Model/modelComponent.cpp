@@ -7,10 +7,10 @@ ModelComponent::ModelComponent(const Mesh& mesh)
 
 void ModelComponent::calculateMatrix() {
 	glm::mat4 unit;
-	auto rotate = glm::toMat4(orientation);
-	auto translate = glm::translate(unit, position);
+	auto translate = glm::translate(unit, getPosition());
+	auto rotate = glm::toMat4(getOrientation());
 
-	matrix = externalMatrix * translate * rotate;
+	setMatrix(getExternalMatrix() * translate * rotate);
 }
 
 void ModelComponent::setTexture(Texture texture) {
@@ -18,7 +18,7 @@ void ModelComponent::setTexture(Texture texture) {
 }
 
 void ModelComponent::render(GLuint matrixHandle, GLuint textureHandle) const {
-	glUniformMatrix4fv(matrixHandle, 1, GL_FALSE, glm::value_ptr(matrix));
+	glUniformMatrix4fv(matrixHandle, 1, GL_FALSE, glm::value_ptr(getMatrix()));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);

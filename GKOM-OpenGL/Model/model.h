@@ -11,18 +11,23 @@
 class Model 
 {
 public:
-	virtual void setPosition(glm::vec3 position);
-	virtual glm::vec3 getPosition();
-	virtual void setOrientation(glm::quat orientation);
-	virtual void setQuatRotation(glm::vec3 axis, GLfloat angle);
-	virtual void setExternalMatrix(glm::mat4 matrix);
+	void setPosition(glm::vec3 position);
+	void setOrientation(glm::quat orientation);
+	void setQuatRotation(glm::vec3 axis, GLfloat angle);
+	void setExternalMatrix(glm::mat4 matrix);
+	const glm::vec3 getTruePosition() const;
+	const glm::vec3 getPosition() const;
+	const glm::quat getOrientation() const;
+	const glm::mat4& getMatrix() const;
+	const glm::mat4& getExternalMatrix() const;
+
 	virtual void calculateMatrix() = 0;
 	virtual void render(GLuint matrixHandle, GLuint textureHandle) const = 0;
-	virtual void setTexture(Texture texture) {};
-
-	const glm::mat4& getMatrix() const;
 
 protected:
+	void setMatrix(glm::mat4 matrix);
+
+private:
 	glm::mat4 matrix;
 	glm::mat4 externalMatrix;
 	glm::vec3 position;
