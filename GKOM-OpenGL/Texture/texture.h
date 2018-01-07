@@ -4,7 +4,6 @@
 #endif
 #include <GL/glew.h>
 #include <string>
-#include <vector>
 
 class Texture {
     private:
@@ -12,16 +11,4 @@ class Texture {
     public:
         Texture(std::string filename);
         GLuint getID() const { return id; }
-};
-
-class Skybox {
-private:
-	GLuint id;
-	GLuint VAO;
-	GLuint VBO;
-	std::vector<GLfloat> vertices;
-public:
-	Skybox(std::vector<std::string> filenames);
-	GLuint getID() const { return id; }
-	void render() const;
 };

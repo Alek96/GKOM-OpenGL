@@ -5,6 +5,7 @@
 #include "../Model/model.h"
 #include "../Shader/shprogram.h"
 #include "../Texture/texture.h"
+#include "../Texture/skybox.h"
 #include "../Light/light.h"
 #include "camera.h"
 

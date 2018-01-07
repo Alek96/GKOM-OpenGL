@@ -145,6 +145,7 @@
     <ClInclude Include="Scene\render.h" />
     <ClInclude Include="Scene\scene.h" />
     <ClInclude Include="Shader\shprogram.h" />
+    <ClInclude Include="Texture\skybox.h" />
     <ClInclude Include="Texture\texture.h" />
     <ClInclude Include="vs_adapter.h" />
     <ClInclude Include="Window\window.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="Scene\render.cpp" />
     <ClCompile Include="Scene\scene.cpp" />
     <ClCompile Include="Shader\shprogram.cpp" />
+    <ClCompile Include="Texture\skybox.cpp" />
     <ClCompile Include="Texture\texture.cpp" />
     <ClCompile Include="Window\window.cpp" />
   </ItemGroup>

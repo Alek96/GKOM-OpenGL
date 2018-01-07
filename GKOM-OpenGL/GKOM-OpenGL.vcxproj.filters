@@ -105,6 +105,9 @@
     <ClInclude Include="Animation\frame.h">
       <Filter>Pliki nagłówkowe\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Texture\skybox.h">
+      <Filter>Pliki nagłówkowe\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="Animation\frame.cpp">
       <Filter>Pliki źródłowe\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture\skybox.cpp">
+      <Filter>Pliki źródłowe\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

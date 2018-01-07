@@ -37,6 +37,7 @@ using namespace std;
 #include "Scene/scene.h"
 // Texture
 #include "Texture/texture.h"
+#include "Texture/skybox.h"
 
 #define CLEAR_COLOR 100.0f/255, 120.0f/255, 235.0f/255
 
