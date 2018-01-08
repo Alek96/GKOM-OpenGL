@@ -28,3 +28,15 @@ void ModelComposite::render(GLuint matrixHandle, GLuint textureHandle) const {
 		(*it)->render(matrixHandle, textureHandle);
     }
 }
+
+Model* ModelComposite::copy() {
+	ModelComposite* newModel = new ModelComposite();
+	for (auto it = components.begin(); it != components.end(); ++it) {
+		newModel->add((*it)->copy());
+	}
+	newModel->setPosition(getPosition());
+	newModel->setOrientation(getOrientation());
+	newModel->setExternalMatrix(getExternalMatrix());
+
+	return newModel;
+}

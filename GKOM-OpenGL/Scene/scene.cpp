@@ -148,7 +148,20 @@ void Scene::initModels() {
 			logPile->add(log);
 		}
 		logPile->setPosition(glm::vec3(0, LOG_RADIUS, PILE_Z));
+
+		models.add(logPile->copy());
+		{
+			ModelComposite* log = createLog();
+			log->setPosition(glm::vec3(0, LOG_RADIUS * 4 - 0.12f, 0));
+			logPile->add(log);
+		}
+		logPile->setPosition(glm::vec3(12.0f, LOG_RADIUS, PILE_Z));
 		models.add(logPile);
+
+		ModelComposite* copyLogPile = new ModelComposite;
+		copyLogPile->add(logPile->copy());
+		copyLogPile->setPosition(glm::vec3(0, 0, -LOG_WIDTH*2));
+		models.add(copyLogPile);
 	}
 
 	// lamp

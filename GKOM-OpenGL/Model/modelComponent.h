@@ -16,5 +16,7 @@ public:
 
 	void calculateMatrix();
 	void setTexture(Texture texture);
+	void setTextureID(GLuint textureID);
 	void render(GLuint matrixHandle, GLuint textureHandle) const;
+	Model* copy();
 };

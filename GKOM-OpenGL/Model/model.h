@@ -23,6 +23,7 @@ public:
 
 	virtual void calculateMatrix() = 0;
 	virtual void render(GLuint matrixHandle, GLuint textureHandle) const = 0;
+	virtual Model* copy() = 0;
 
 protected:
 	void setMatrix(glm::mat4 matrix);

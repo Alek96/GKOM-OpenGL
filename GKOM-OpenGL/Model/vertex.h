@@ -17,7 +17,6 @@ struct Vertex {
 	Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 textCoord) 
 		: position(position), normal(normal), textCoord(textCoord) {}
 
-	void setColor(glm::vec3 color) { 
-		this->color = color; 
-	}
+	void setColor(glm::vec3 color) { this->color = color; }
+	glm::vec3 getColor() { return color; }
 };

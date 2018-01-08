@@ -15,6 +15,7 @@ public:
 	void add(Model* model);
 	void calculateMatrix();
 	void render(GLuint matrixHandle, GLuint textureHandle) const;
+	Model* copy();
 
 	const std::deque<Model*>& getComponents() const { return components; }
 	Model* operator[](int index) { return components[index]; }
